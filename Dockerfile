@@ -11,9 +11,10 @@ RUN npm i -g nodemon
 
 # Install the application dependencies
 COPY package*.json ./
-
+RUN rm -rf node_modules
 # Install local dependencies
 RUN npm install
+
 
 # Expose port 8080 for the Vue.js server
 EXPOSE 8080 3000
