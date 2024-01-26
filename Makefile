@@ -26,4 +26,4 @@ logs log:
 	docker logs  --follow `docker ps -aqf "ancestor=momostock"`
 
 shell:
-	docker exec -it `docker ps -aqf "ancestor=momostock"` bash
+	docker exec -it `docker ps -aqf "ancestor=momostock"` ash
