@@ -4,14 +4,19 @@ FROM node:lts-alpine
 # Set the working directory in the container to /app
 WORKDIR /app
 
-# Install global dependencies
-RUN npm i -g concurrently
-RUN npm i -g @vue/cli
-RUN npm i -g nodemon
+# Copy package*.json into the working directory
+COPY package*.json ./
 
 # Install the application dependencies
-COPY package*.json ./
-RUN rm -rf node_modules package-lock.json && npm install
+RUN npm install
+
+# Install global dependencies
+RUN npm i -g concurrently
+RUN npm i -g @vue/cli-service
+RUN npm i -g nodemon
+
+# Copy the rest of the application into the working directory
+COPY . .
 
 # Expose port 8080 for the Vue.js server
 EXPOSE 8080 3000
