@@ -14,6 +14,7 @@ RUN npm install
 RUN npm i -g concurrently
 RUN npm i -g @vue/cli-service
 RUN npm i -g nodemon
+RUN npm i -g @vue/cli-plugin-babel
 
 # Copy the rest of the application into the working directory
 COPY . .
