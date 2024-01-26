@@ -6,8 +6,8 @@ WORKDIR /app
 
 # Install the application dependencies
 COPY package*.json ./
-RUN npm install
-RUN npm install --only=dev
+# RUN npm install
+RUN npm install --include dev
 # Expose port 8080 for the Vue.js server
 EXPOSE 8080 3000
 
