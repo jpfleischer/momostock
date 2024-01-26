@@ -13,6 +13,9 @@ RUN npm i -g concurrently
 RUN npm i -g @vue/cli
 RUN npm i -g nodemon
 
+# Install local dependencies
+RUN npm i express
+
 RUN npm install --include dev
 # Expose port 8080 for the Vue.js server
 EXPOSE 8080 3000
