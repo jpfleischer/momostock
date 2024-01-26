@@ -24,3 +24,6 @@ old-run:
 logs log:
 	# we use ancestor and follow
 	docker logs  --follow `docker ps -aqf "ancestor=momostock"`
+
+shell:
+	docker exec -it `docker ps -aqf "ancestor=momostock"` bash
