@@ -4,23 +4,23 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
 run: stop build
-    -docker network create momo
-    docker run \
-    -p 80:8081 \
-    -p 3000:3000 \
-    --network=momo \
-    -d momostock
-    make logs
+	-docker network create momo
+	docker run \
+	-p 80:8081 \
+	-p 3000:3000 \
+	--network=momo \
+	-d momostock
+	make logs
 else
 run: stop build
-    -docker network create momo
-    docker run \
-    -p 8080:8081 \
-    -p 3000:3000 \
-    -v ${CURDIR}:/app \
-    --network=momo \
-    -d momostock
-    make logs
+	-docker network create momo
+	docker run \
+	-p 8080:8081 \
+	-p 3000:3000 \
+	-v ${CURDIR}:/app \
+	--network=momo \
+	-d momostock
+	make logs
 endif
 
 
