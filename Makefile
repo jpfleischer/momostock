@@ -14,7 +14,7 @@ run: stop build
 build:
 	docker build -t momostock .
 
-stop:
+stop down:
 	-docker stop `docker ps -aqf "ancestor=momostock"`
 	-docker rm `docker ps -aqf "ancestor=momostock"`
 
@@ -27,3 +27,6 @@ logs log:
 
 shell:
 	docker exec -it `docker ps -aqf "ancestor=momostock"` ash
+
+debug:
+	npm run serve

@@ -13,6 +13,7 @@
                         <th>Expiration Date</th>
                         <th>Sharing</th>
                         <th>Image</th> <!-- New column for the image -->
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,6 +26,11 @@
                         <td>
                             <img :src="`${serverUrl}/uploads/${food.image_location}`" alt="Food image" height="100"
                                 @click="toggleImageSize($event)">
+                        </td>
+                        <td>
+                            <div class="icon-container">
+                                <font-awesome-icon class="cursor-pointer trash-icon fa-lg" icon="trash" @click="deleteFood(food.id)"></font-awesome-icon>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -122,7 +128,26 @@ export default {
         },
         toggleImageSize(event) {
             event.target.classList.toggle('full-size');
-        }
+        },
+        async deleteFood(foodId) {
+            if (window.confirm('Are you sure you want to delete this food?')) {
+                try {
+                    await axios.delete(`${this.serverUrl}/foods/${foodId}`);
+                    this.foods = this.foods.filter(food => food.id !== foodId);
+
+                    // Destroy the existing DataTable
+                    $('#pantryTable').DataTable().destroy();
+
+                    // Wait for Vue to finish updating the DOM
+                    this.$nextTick(() => {
+                        // Reinitialize the DataTable
+                        $('#pantryTable').DataTable();
+                    });
+                } catch (error) {
+                    console.error('Failed to delete food:', error);
+                }
+            }
+        },
     },
 }
 </script>
@@ -197,5 +222,20 @@ img:hover {
 .center-text {
     text-align: center;
     margin-top: 20px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.trash-icon {
+    color: red;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 </style>

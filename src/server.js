@@ -112,6 +112,20 @@ app.post('/foodAdd/:id/image', upload.single('image'), async (req, res) => {
     }
 });
 
+app.delete('/foods/:id', async (req, res) => {
+    const { id } = req.params;
+    const client = await pool.connect();
+    try {
+        await client.query('DELETE FROM food WHERE id = $1', [id]);
+        res.status(200).send('Food deleted');
+    } catch (error) {
+        console.error('Failed to delete food:', error);
+        res.status(500).send('Server error');
+    } finally {
+        client.release();
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
