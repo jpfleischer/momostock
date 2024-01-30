@@ -11,6 +11,14 @@ app.use(cors());
 app.use(express.json());
 const port = 3000;
 
+// Create 'uploads/' and 'uploads/compressed/' directories if they don't exist
+if (!fs.existsSync('uploads/')) {
+    fs.mkdirSync('uploads/');
+}
+if (!fs.existsSync('uploads/compressed/')) {
+    fs.mkdirSync('uploads/compressed/');
+}
+
 const pool = new Pool({
     user: 'momo',
     host: 'momodb',
