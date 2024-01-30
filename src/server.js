@@ -35,7 +35,7 @@ const upload = multer({
     },
     fileFilter: function (req, file, cb) {
         // Accept images only
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) { // added 'i' flag to ignore case
             return cb(new Error('Only image files are allowed!'), false);
         }
         cb(null, true);
@@ -125,7 +125,7 @@ app.put('/foodAdd/:id', async (req, res) => {
     }
 });
 
-app.post('/foodAdd/:id/image', upload.single('image'), async (req, res) => {
+app.post('/foodAdd/:id/image', upload, async (req, res) => {
     const { id } = req.params;
     const image = req.file ? req.file.filename : null;
     const client = await pool.connect();
