@@ -103,6 +103,7 @@ app.post('/foodAdd', upload, async (req, res) => {
     if (image) {
         // Compress the image using sharp
         await sharp(req.file.path)
+            .rotate() // Auto-rotate based on the orientation tag
             .resize(500) // Resize to 500px width
             .jpeg({ quality: 50 }) // Convert to jpeg format with 50% quality
             .toFile(`uploads/compressed/${image}`);
