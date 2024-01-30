@@ -8,6 +8,7 @@ run: stop build
 	docker run \
 	-p 80:8081 \
 	-p 3000:3000 \
+	-v ${CURDIR}/uploads:/app/uploads \
 	--network=momo \
 	-d momostock
 	make logs
