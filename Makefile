@@ -27,7 +27,7 @@ endif
 build:
 	docker build -t momostock .
 
-stop:
+stop down:
 	-docker stop `docker ps -aqf "ancestor=momostock"`
 	-docker rm `docker ps -aqf "ancestor=momostock"`
 
