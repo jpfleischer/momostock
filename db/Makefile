@@ -5,7 +5,7 @@ run: stop
 	--network=momo \
 	-p 5432:5432 -d momodb-image
 
-stop:
+stop down:
 	-docker stop momodb
 	-docker rm momodb
 
