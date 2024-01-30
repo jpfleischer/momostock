@@ -1,5 +1,14 @@
 # momostock
 
+The only thing to start the program is
+
+```bash
+cd db
+make
+cd ..
+make
+```
+
 ## Project setup
 ```
 npm install
