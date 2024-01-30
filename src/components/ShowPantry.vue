@@ -43,6 +43,7 @@
 import axios from 'axios';
 import $ from 'jquery';
 import 'datatables.net-dt';
+import moment from 'moment';
 
 export default {
     data() {
@@ -67,6 +68,17 @@ export default {
 
         this.$nextTick(() => {
             $('#pantryTable').DataTable({
+                columnDefs: [
+                    {
+                        targets: 3, // The column index (counting from 0)
+                        render: function (data, type) {
+                            if (type === 'sort' || type === 'type') {
+                                return moment(data).unix();
+                            }
+                            return data;
+                        }
+                    }
+                ],
                 responsive: true,
                 autoWidth: false,
                 paging: true,

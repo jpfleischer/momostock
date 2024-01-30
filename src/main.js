@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import BootstrapVueNext from 'bootstrap-vue-next'
 
+import moment from 'moment';
+
 // Add the necessary CSS
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
@@ -37,5 +39,6 @@ import 'datatables.net-buttons/js/buttons.colVis.js';
 createApp(App)
     .use(router)
     .use(BootstrapVueNext) // Change this line
+    .use(moment)
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app')
