@@ -4,6 +4,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const sharp = require('sharp');
 
 const app = express();
 app.use(cors());
@@ -27,12 +28,19 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     limits: {
         fieldSize: 1024 * 1024 * 10, // limit file size to 10MB
     },
-});
+    fileFilter: function (req, file, cb) {
+        // Accept images only
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+            return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+    }
+}).single('image');
 
 app.get('/foods', async (req, res) => {
     const client = await pool.connect();
@@ -81,9 +89,18 @@ app.put('/foodsClaim/:id', async (req, res) => {
     }
 });
 
-app.post('/foodAdd', upload.single('image'), async (req, res) => {
+app.post('/foodAdd', upload, async (req, res) => {
     const { title, location, owner, expiration_date, sharing } = req.body;
-    const image = req.file ? req.file.filename : null;
+    let image = req.file ? req.file.filename : null;
+    if (image) {
+        // Compress the image using sharp
+        await sharp(req.file.path)
+            .resize(500) // Resize to 500px width
+            .jpeg({ quality: 50 }) // Convert to jpeg format with 50% quality
+            .toFile(`uploads/compressed/${image}`);
+        // Update image path to compressed image
+        image = `compressed/${image}`;
+    }
     const client = await pool.connect();
     try {
         const result = await client.query('INSERT INTO food (title, location, owner, expiration_date, image_location, sharing) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', [title, location, owner, expiration_date, image, sharing]);
