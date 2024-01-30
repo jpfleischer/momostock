@@ -27,7 +27,12 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ 
+    storage: storage,
+    limits: {
+        fieldSize: 1024 * 1024 * 10, // limit file size to 10MB
+    },
+});
 
 app.get('/foods', async (req, res) => {
     const client = await pool.connect();
@@ -83,6 +88,9 @@ app.post('/foodAdd', upload.single('image'), async (req, res) => {
     try {
         const result = await client.query('INSERT INTO food (title, location, owner, expiration_date, image_location, sharing) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id', [title, location, owner, expiration_date, image, sharing]);
         res.status(201).json({ id: result.rows[0].id });
+    } catch (error) {
+        console.error('Failed to add food:', error);
+        res.status(500).send('Server error');
     } finally {
         client.release();
     }

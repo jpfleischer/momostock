@@ -29,7 +29,7 @@
                         </td>
                         <td>
                             <div class="icon-container">
-                                <font-awesome-icon class="cursor-pointer trash-icon fa-lg" icon="trash" @click="deleteFood(food.id)"></font-awesome-icon>
+                                <font-awesome-icon class="cursor-pointer trash-icon fa-lg" icon="trash" @click="deleteFood(food.id, food.title)"></font-awesome-icon>
                             </div>
                         </td>
                     </tr>
@@ -141,8 +141,8 @@ export default {
         toggleImageSize(event) {
             event.target.classList.toggle('full-size');
         },
-        async deleteFood(foodId) {
-            if (window.confirm('Are you sure you want to delete this food?')) {
+        async deleteFood(foodId, foodName) {
+            if (window.confirm(`Are you sure you want to delete ${foodName}?`)) {
                 try {
                     await axios.delete(`${this.serverUrl}/foods/${foodId}`);
                     this.foods = this.foods.filter(food => food.id !== foodId);

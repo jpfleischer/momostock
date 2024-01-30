@@ -24,12 +24,12 @@ library.add(faUserSecret)
 /* import specific icons */
 import { faCat } from '@fortawesome/free-solid-svg-icons' // Change this line
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-import { faSun, faMoon, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSun, faMoon, faTrash, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 /* add icons to the library */
 library.add(faCat) // And this line
 library.add(faCoffee)
-library.add(faSun, faMoon, faTrash)
+library.add(faSun, faMoon, faTrash, faSpinner)
 import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
 import 'datatables.net-bs4';
 import 'datatables.net-buttons/js/buttons.html5.js';

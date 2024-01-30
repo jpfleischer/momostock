@@ -44,10 +44,17 @@
 
             <div class="mb-3">
                 <label for="image">Image:</label>
-                <input id="image" type="file" @change="onFileChange" accept=".jpg, .jpeg, .png, .gif">
+                <input id="image" type="file" ref="fileInput" @change="onFileChange" accept=".jpg, .jpeg, .png, .gif">
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Food</button>
+            <button type="submit" class="btn btn-primary" :disabled="isUploading">
+                <span v-if="isUploading">
+                    <font-awesome-icon icon="spinner" pulse /> Loading...
+                </span>
+                <span v-else>
+                    Add Food
+                </span>
+            </button>
         </form>
     </div>
 </template>
@@ -64,22 +71,20 @@ export default {
                 expiration_date: '',
                 sharing: 'Unknown', // New property for sharing
                 image: null
-            }
+            },
+            fileInput: null, // New property
+            isUploading: false,
         }
     },
     methods: {
         onFileChange(e) {
-            let files = e.target.files || e.dataTransfer.files;
-            if (!files.length)
-                return;
-            this.newFood.image = files[0];
+            this.newFood.image = e.target.files[0];
         },
         async addFood() {
+            this.isUploading = true;
             let formData = new FormData();
             Object.keys(this.newFood).forEach(key => {
-                if (this.newFood[key] != null) {
-                    formData.append(key, this.newFood[key]);
-                }
+                formData.append(key, this.newFood[key]);
             });
 
             await axios.post(`${process.env.VUE_APP_SERVER_URL}/foodAdd`, formData, {
@@ -87,14 +92,9 @@ export default {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            window.alert('mmm momo appreciates your delectable food');
 
-            // if (this.newFood.image) {
-            // await axios.post(`http://localhost:3000/foodAdd/${response.data.id}/image`, this.newFood.image, {
-            // headers: {
-            // 'Content-Type': 'multipart/form-data'
-            // }
-            // });
-            // }
+            // Reset the form
             this.newFood = {
                 title: '',
                 location: '',
@@ -103,7 +103,9 @@ export default {
                 sharing: 'Unknown',
                 image: null
             };
-        }
+            this.$refs.fileInput.value = ''; // Clear the file input field
+            this.isUploading = false;
+        },
     }
 }
 </script>
