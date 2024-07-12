@@ -1,5 +1,7 @@
 # momostock
 
+A simple kitchen application to show stats about the food in your pantry!
+
 The only thing to start the program is
 
 ```bash
